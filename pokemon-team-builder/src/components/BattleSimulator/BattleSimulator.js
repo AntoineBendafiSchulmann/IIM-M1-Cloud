@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { TeamContext } from "../../TeamContext";
+import { useNavigate } from "react-router-dom";
 
 const BattleSimulator = () => {
   const { team: team1 } = useContext(TeamContext);
@@ -8,6 +9,14 @@ const BattleSimulator = () => {
   const [team2, setTeam2] = useState([]);
   const [result, setResult] = useState("");
   const teamLimit = 6;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect to team-builder if team1 is empty
+    if (team1.length === 0) {
+      navigate("/team-builder");
+    }
+  }, [team1, navigate]);
 
   useEffect(() => {
     // Fetch list of Pokémon from the PokeAPI
@@ -42,7 +51,7 @@ const BattleSimulator = () => {
   };
 
   const rollDice = () => {
-    return Math.floor(Math.random() * 6) + 1; // Simule un dé à 6 faces
+    return Math.floor(Math.random() * 6) + 1; 
   };
 
   const simulateBattle = () => {
