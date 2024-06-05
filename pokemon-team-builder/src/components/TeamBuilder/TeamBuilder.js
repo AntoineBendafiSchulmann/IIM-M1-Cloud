@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import axios from 'axios';
 import { TeamContext } from "../../TeamContext";
+
 
 const TeamBuilder = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -9,19 +10,23 @@ const TeamBuilder = () => {
   const teamLimit = 6;
 
   useEffect(() => {
-
-    axios.get("https://pokeapi.co/api/v2/pokemon?limit=151")
+    axios.get('http://localhost:3000/api/pokemons?limit=151&offset=0')
       .then(response => setPokemons(response.data.results));
   }, []);
 
   useEffect(() => {
-    //console.log(team);
   }, [team]);
 
-
   const addToTeam = async (pokemon) => {
+    const id = pokemon.url.split('/').filter(Boolean).pop();
+  
+    if (!id) {
+      console.error('Pokemon ID is undefined');
+      return;
+    }
+  
     if (team.length < teamLimit) {
-      const response = await axios.get(pokemon.url);
+      const response = await axios.get(`http://localhost:3000/api/pokemon/${id}`);
       const pokemonDetails = response.data;
       setTeam([...team, { ...pokemonDetails, uniqueId: `${pokemon.name}-${team.length}-${Date.now()}` }]);
     }
@@ -38,7 +43,7 @@ const TeamBuilder = () => {
         <h3>Available Pokémon</h3>
         <ul>
           {pokemons.map((pokemon, index) => (
-            <li key={`${pokemon.name}-${index}`}>
+            <li key={`${pokemon.id}-${index}`}>
               <Link to={`/pokemon/${pokemon.name}`}>{pokemon.name}</Link>
               <button 
                 onClick={() => addToTeam(pokemon)}

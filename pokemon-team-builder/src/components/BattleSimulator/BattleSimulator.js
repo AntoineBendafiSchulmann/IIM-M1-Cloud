@@ -18,25 +18,24 @@ const BattleSimulator = () => {
   }, [team1, navigate]);
 
   useEffect(() => {
-
-    axios.get("https://pokeapi.co/api/v2/pokemon?limit=151")
+    axios.get("http://localhost:3000/api/pokemons?limit=151")
       .then(response => setAllPokemons(response.data.results));
   }, []);
-
+  
   const generateRandomTeam = async () => {
     let randomTeam = [];
     while (randomTeam.length < teamLimit) {
       const randomIndex = Math.floor(Math.random() * allPokemons.length);
       const randomPokemon = allPokemons[randomIndex];
       if (randomPokemon && randomPokemon.url && !randomTeam.some(p => p.name === randomPokemon.name)) {
-        const response = await axios.get(randomPokemon.url);
+        const id = randomPokemon.url.split('/').filter(Boolean).pop();
+        const response = await axios.get(`http://localhost:3000/api/pokemon/${id}`);
         const pokemonDetails = response.data;
         randomTeam.push({ ...pokemonDetails, uniqueId: `${pokemonDetails.name}-${randomTeam.length}-${Date.now()}` });
       }
     }
     setTeam2(randomTeam);
   };
-
   const rollDice = () => {
     return Math.floor(Math.random() * 6) + 1; 
   };
