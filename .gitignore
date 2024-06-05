@@ -1,2 +1,6 @@
 backend/yarn.lock
 backend/node_modules/
+
+pokemon-team-builder/yarn.lock
+
+.DS_Store
