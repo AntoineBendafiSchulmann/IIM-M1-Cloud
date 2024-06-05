@@ -12,29 +12,16 @@ const BattleSimulator = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirect to team-builder if team1 is empty
     if (team1.length === 0) {
       navigate("/team-builder");
     }
   }, [team1, navigate]);
 
   useEffect(() => {
-    // Fetch list of Pokémon from the PokeAPI
+
     axios.get("https://pokeapi.co/api/v2/pokemon?limit=151")
       .then(response => setAllPokemons(response.data.results));
   }, []);
-
-  const addToTeam2 = async (pokemon) => {
-    if (team2.length < teamLimit) {
-      const response = await axios.get(pokemon.url);
-      const pokemonDetails = response.data;
-      setTeam2([...team2, { ...pokemonDetails, uniqueId: `${pokemon.name}-${team2.length}-${Date.now()}` }]);
-    }
-  };
-
-  const removeFromTeam2 = (pokemon) => {
-    setTeam2(team2.filter(p => p.uniqueId !== pokemon.uniqueId));
-  };
 
   const generateRandomTeam = async () => {
     let randomTeam = [];
