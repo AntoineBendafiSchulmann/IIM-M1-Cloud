@@ -4,7 +4,7 @@ import { TeamContext } from "../../TeamContext";
 import { useNavigate } from "react-router-dom";
 
 const BattleSimulator = () => {
-  const { team: team1 } = useContext(TeamContext);
+  const { team: team1, teamName } = useContext(TeamContext);
   const [allPokemons, setAllPokemons] = useState([]);
   const [team2, setTeam2] = useState([]);
   const [result, setResult] = useState("");
@@ -77,7 +77,7 @@ const BattleSimulator = () => {
     <div>
       <h2>Battle Simulator</h2>
       <div>
-        <h3>Team 1</h3>
+        <h3>{teamName}</h3>
         <ul>
           {team1.map(pokemon => (
             <li key={pokemon.uniqueId}>

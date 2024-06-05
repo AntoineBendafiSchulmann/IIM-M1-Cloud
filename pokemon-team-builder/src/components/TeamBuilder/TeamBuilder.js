@@ -5,14 +5,19 @@ import { TeamContext } from "../../TeamContext";
 
 const TeamBuilder = () => {
   const [pokemons, setPokemons] = useState([]);
-  const { team, setTeam } = useContext(TeamContext);
+  const { team, setTeam, teamName, setTeamName } = useContext(TeamContext);
   const teamLimit = 6;
 
   useEffect(() => {
-    // Fetch list of Pokémon from the PokeAPI
+
     axios.get("https://pokeapi.co/api/v2/pokemon?limit=151")
       .then(response => setPokemons(response.data.results));
   }, []);
+
+  useEffect(() => {
+    //console.log(team);
+  }, [team]);
+
 
   const addToTeam = async (pokemon) => {
     if (team.length < teamLimit) {
@@ -48,6 +53,12 @@ const TeamBuilder = () => {
       <div>
         <h3>My Team</h3>
         <p>{`You can add ${teamLimit - team.length} more Pokémon to your team.`}</p>
+
+        <label>
+        Team Name:
+        <input type="text" value={teamName} onChange={e => setTeamName(e.target.value)} />
+        </label>
+
         <ul>
           {team.map(pokemon => (
             <li key={pokemon.uniqueId}>
