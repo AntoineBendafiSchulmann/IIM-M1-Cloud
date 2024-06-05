@@ -85,7 +85,6 @@ const BattleSimulator = () => {
             <li key={pokemon.uniqueId}>
               <img src={pokemon.sprites.front_default} alt={pokemon.name} />
               {pokemon.name} 
-              <button onClick={() => removeFromTeam2(pokemon)}>Remove</button>
             </li>
           ))}
         </ul>
