@@ -6,6 +6,14 @@ async function getPokemonById(id) {
 	return response.data;
 }
 
+async function getAllPokemons(limit, offset) {
+	const response = await axios.get(
+		`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`,
+	);
+	return response.data;
+}
+
 module.exports = {
 	getPokemonById,
+	getAllPokemons,
 };
