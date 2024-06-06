@@ -17,7 +17,7 @@ const TeamBuilder = () => {
       setLoading(true);
 
       try {
-        const response = await axios.get(`/prod/getPokemons`, { headers: { 'Cache-Control': 'no-cache' } });
+        const response = await axios.get(`https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemons`, { headers: { 'Cache-Control': 'no-cache' } });
         if (response.data && response.data.results) {
           const promises = response.data.results.map(pokemon => {
             const id = pokemon.url.split('/').filter(Boolean).pop();
