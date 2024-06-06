@@ -6,32 +6,40 @@ import './TeamBuilder.css';
 
 const TeamBuilder = () => {
   const [pokemons, setPokemons] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [offset, setOffset] = useState(0);
   const { team, setTeam, teamName, setTeamName } = useContext(TeamContext);
   const teamLimit = 6;
+  const limit = 20; // Number of Pokémon to load at a time
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/pokemons?limit=151&offset=0')
-      .then(response => {
-        const promises = response.data.results.map(pokemon => {
-          const id = pokemon.url.split('/').filter(Boolean).pop();
-          return axios.get(`http://localhost:3000/api/pokemon/${id}`);
-        });
-        return Promise.all(promises);
-      })
-      .then(responses => {
-        const pokemonsWithDetails = responses.map(response => response.data);
-        setPokemons(pokemonsWithDetails);
+    const loadPokemons = async () => {
+      setLoading(true);
+      const response = await axios.get(`http://localhost:3000/api/pokemons?limit=${limit}&offset=${offset}`);
+      const promises = response.data.results.map(pokemon => {
+        const id = pokemon.url.split('/').filter(Boolean).pop();
+        return axios.get(`http://localhost:3000/api/pokemon/${id}`);
       });
-  }, []);
+      const responses = await Promise.all(promises);
+      const pokemonsWithDetails = responses.map(response => response.data);
+      setPokemons(prevPokemons => [...prevPokemons, ...pokemonsWithDetails]);
+      setLoading(false);
+    };
+    loadPokemons();
+  }, [offset]);
+
+  const loadMorePokemons = () => {
+    setOffset(prevOffset => prevOffset + limit);
+  };
 
   const addToTeam = async (pokemon) => {
     const id = pokemon.id;
-    
+
     if (!id) {
       console.error('Pokemon ID is undefined');
       return;
     }
-    
+
     if (team.length < teamLimit) {
       const response = await axios.get(`http://localhost:3000/api/pokemon/${id}`);
       const pokemonDetails = response.data;
@@ -61,6 +69,12 @@ const TeamBuilder = () => {
           </li>
         ))}
       </ul>
+      {loading && <p>Loading...</p>}
+      {!loading && (
+        <button onClick={loadMorePokemons} className="load-more">
+          Load More Pokémon
+        </button>
+      )}
       <div className="my-team">
         <h3>My Team</h3>
         <p>{`You can add ${teamLimit - team.length} more Pokémon to your team.`}</p>
