@@ -10,7 +10,7 @@ const TeamBuilder = () => {
   const [offset, setOffset] = useState(0);
   const { team, setTeam, teamName, setTeamName } = useContext(TeamContext);
   const teamLimit = 6;
-  const limit = 20; // Number of Pokémon to load at a time
+  const limit = 20;
 
   useEffect(() => {
     const loadPokemons = async () => {
