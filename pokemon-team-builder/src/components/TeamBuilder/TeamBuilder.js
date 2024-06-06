@@ -16,10 +16,10 @@ const TeamBuilder = () => {
     const loadPokemons = async () => {
       setLoading(true);
 
-      const response = await axios.get(`/prod/getPokemons`);
+      const response = await axios.get(`/api/getPokemons`);
       const promises = response.data.results.map(pokemon => {
         const id = pokemon.url.split('/').filter(Boolean).pop();
-        return axios.get(`/prod/getPokemonById/${id}`);
+        return axios.get(`/api/getPokemonById/${id}`);
       });
       const responses = await Promise.all(promises);
       const pokemonsWithDetails = responses.map(response => response.data);
@@ -42,7 +42,7 @@ const TeamBuilder = () => {
     }
 
     if (team.length < teamLimit) {
-      const response = await axios.get(`/prod/getPokemonById/${id}`);
+      const response = await axios.get(`/api/getPokemonById/${id}`);
       const pokemonDetails = response.data;
       setTeam([...team, { ...pokemonDetails, sprite: pokemonDetails.sprites.front_default, uniqueId: `${pokemon.name}-${team.length}-${Date.now()}` }]);
     }
