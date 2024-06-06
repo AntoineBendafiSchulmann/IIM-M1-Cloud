@@ -30,7 +30,7 @@ const BattleSimulator = () => {
   }, [team1, navigate]);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/pokemons?limit=151")
+    axios.get("https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemons?limit=151")
       .then(response => setAllPokemons(response.data.results));
   }, []);
   
@@ -41,7 +41,7 @@ const BattleSimulator = () => {
       const randomPokemon = allPokemons[randomIndex];
       if (randomPokemon && randomPokemon.url && !randomTeam.some(p => p.name === randomPokemon.name)) {
         const id = randomPokemon.url.split('/').filter(Boolean).pop();
-        const response = await axios.get(`http://localhost:3000/api/pokemon/${id}`);
+        const response = await axios.get(`https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemonById/${id}`);
         const pokemonDetails = response.data;
         randomTeam.push({ ...pokemonDetails, uniqueId: `${pokemonDetails.name}-${randomTeam.length}-${Date.now()}` });
       }
