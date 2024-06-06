@@ -16,10 +16,10 @@ const TeamBuilder = () => {
     const loadPokemons = async () => {
       setLoading(true);
 
-      const response = await axios.get(`/api/getPokemons`);
+      const response = await axios.get(`/prod/getPokemons`);
       const promises = response.data.results.map(pokemon => {
         const id = pokemon.url.split('/').filter(Boolean).pop();
-        return axios.get(`/api/getPokemonById/${id}`);
+        return axios.get(`/prod/getPokemonById/${id}`);
       });
       const responses = await Promise.all(promises);
       const pokemonsWithDetails = responses.map(response => response.data);

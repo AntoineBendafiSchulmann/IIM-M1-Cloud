@@ -72,14 +72,14 @@ const BattleSimulator = () => {
     setTimeout(() => {
       setDiceResults({ team1: team1Dice, team2: team2Dice });
       setAnimate(false);
-    }, 1000); // La durée de l'animation
+    }, 1000); 
   
     const winner = team1Score > team2Score ? "Team 1 wins!" : "Team 2 wins!";
     const resultMessage = `${winner} (Team 1: ${team1Score}, Team 2: ${team2Score})`;
     setResult(resultMessage);
   
     const battleResult = {
-      id: `${teamName}-${Date.now()}`, // Génère un ID unique pour le résultat du combat
+      id: `${teamName}-${Date.now()}`, 
       winner: winner,
       team1: {
         name: teamName,

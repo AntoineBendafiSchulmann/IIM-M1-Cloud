@@ -12,8 +12,12 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/api/battle-results",
       "dest": "/api/battle-results.js"
+    },
+    {
+      "src": "/api/getPokemons",
+      "dest": "/api/getPokemons.js"
     }
   ]
 }
