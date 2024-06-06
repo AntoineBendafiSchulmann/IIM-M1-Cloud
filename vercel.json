@@ -9,6 +9,11 @@
     ],
     "routes": [
       { "src": "/(.*)", "dest": "pokemon-team-builder/$1" }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/:path*",
+        "destination": "https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/:path*"
+      }
     ]
   }
-  

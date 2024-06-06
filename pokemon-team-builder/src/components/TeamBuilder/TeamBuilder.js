@@ -16,15 +16,10 @@ const TeamBuilder = () => {
     const loadPokemons = async () => {
       setLoading(true);
 
-      // add alow origin header to the get request
-      const response = await axios.get(`https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemons`, {
-        headers: {
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
+      const response = await axios.get(`/prod/getPokemons`);
       const promises = response.data.results.map(pokemon => {
         const id = pokemon.url.split('/').filter(Boolean).pop();
-        return axios.get(`https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemonById/${id}`);
+        return axios.get(`/prod/getPokemonById/${id}`);
       });
       const responses = await Promise.all(promises);
       const pokemonsWithDetails = responses.map(response => response.data);
@@ -47,7 +42,7 @@ const TeamBuilder = () => {
     }
 
     if (team.length < teamLimit) {
-      const response = await axios.get(`https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemonById/${id}`);
+      const response = await axios.get(`/prod/getPokemonById/${id}`);
       const pokemonDetails = response.data;
       setTeam([...team, { ...pokemonDetails, sprite: pokemonDetails.sprites.front_default, uniqueId: `${pokemon.name}-${team.length}-${Date.now()}` }]);
     }
