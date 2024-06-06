@@ -15,10 +15,10 @@ const TeamBuilder = () => {
   useEffect(() => {
     const loadPokemons = async () => {
       setLoading(true);
-      const response = await axios.get(`http://localhost:3000/api/pokemons?limit=${limit}&offset=${offset}`);
+      const response = await axios.get(`https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemons?limit=${limit}&offset=${offset}`);
       const promises = response.data.results.map(pokemon => {
         const id = pokemon.url.split('/').filter(Boolean).pop();
-        return axios.get(`http://localhost:3000/api/pokemon/${id}`);
+        return axios.get(`https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemonById/${id}`);
       });
       const responses = await Promise.all(promises);
       const pokemonsWithDetails = responses.map(response => response.data);
@@ -27,21 +27,17 @@ const TeamBuilder = () => {
     };
     loadPokemons();
   }, [offset]);
-
-  const loadMorePokemons = () => {
-    setOffset(prevOffset => prevOffset + limit);
-  };
-
+  
   const addToTeam = async (pokemon) => {
     const id = pokemon.id;
-
+  
     if (!id) {
       console.error('Pokemon ID is undefined');
       return;
     }
-
+  
     if (team.length < teamLimit) {
-      const response = await axios.get(`http://localhost:3000/api/pokemon/${id}`);
+      const response = await axios.get(`https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemonById/${id}`);
       const pokemonDetails = response.data;
       setTeam([...team, { ...pokemonDetails, sprite: pokemonDetails.sprites.front_default, uniqueId: `${pokemon.name}-${team.length}-${Date.now()}` }]);
     }
