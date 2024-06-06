@@ -2,18 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "pokemon-team-builder/package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "build" }
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "src/**/*.js",
+      "use": "@vercel/next"
     }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/:path*"
+      "src": "/api/(.*)",
+      "dest": "/api/battle-results.js"
     }
   ]
 }

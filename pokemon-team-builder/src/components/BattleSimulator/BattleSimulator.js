@@ -30,10 +30,10 @@ const BattleSimulator = () => {
   }, [team1, navigate]);
 
   useEffect(() => {
-    axios.get("https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemons?limit=151")
+    axios.get("http://localhost:3000/api/pokemons?limit=151")
       .then(response => setAllPokemons(response.data.results));
   }, []);
-  
+
   const generateRandomTeam = useCallback(async () => {
     let randomTeam = [];
     while (randomTeam.length < teamLimit) {
@@ -41,16 +41,16 @@ const BattleSimulator = () => {
       const randomPokemon = allPokemons[randomIndex];
       if (randomPokemon && randomPokemon.url && !randomTeam.some(p => p.name === randomPokemon.name)) {
         const id = randomPokemon.url.split('/').filter(Boolean).pop();
-        const response = await axios.get(`https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemonById/${id}`);
+        const response = await axios.get(`http://localhost:3000/api/pokemon/${id}`);
         const pokemonDetails = response.data;
         randomTeam.push({ ...pokemonDetails, uniqueId: `${pokemonDetails.name}-${randomTeam.length}-${Date.now()}` });
       }
     }
     setTeam2(randomTeam);
   }, [allPokemons, teamLimit]);
-  
+
   const rollDice = () => {
-    return Math.floor(Math.random() * 6) + 1; 
+    return Math.floor(Math.random() * 6) + 1;
   };
 
   const simulateBattle = async () => {
@@ -59,7 +59,7 @@ const BattleSimulator = () => {
     let team2Score = 0;
     const team1Dice = [];
     const team2Dice = [];
-
+  
     for (let i = 0; i < teamLimit; i++) {
       const roll1 = rollDice();
       const roll2 = rollDice();
@@ -68,17 +68,18 @@ const BattleSimulator = () => {
       team1Dice.push(roll1);
       team2Dice.push(roll2);
     }
-
+  
     setTimeout(() => {
       setDiceResults({ team1: team1Dice, team2: team2Dice });
       setAnimate(false);
     }, 1000); // La durée de l'animation
-
+  
     const winner = team1Score > team2Score ? "Team 1 wins!" : "Team 2 wins!";
     const resultMessage = `${winner} (Team 1: ${team1Score}, Team 2: ${team2Score})`;
     setResult(resultMessage);
-
+  
     const battleResult = {
+      id: `${teamName}-${Date.now()}`, // Génère un ID unique pour le résultat du combat
       winner: winner,
       team1: {
         name: teamName,
@@ -91,14 +92,14 @@ const BattleSimulator = () => {
         pokemons: team2.map(pokemon => pokemon.name)
       }
     };
-
+  
     try {
-      await axios.post('http://localhost:3000/api/battle-results', battleResult);
+      await axios.post('/api/battle-results', battleResult);
       console.log('Battle result submitted successfully');
     } catch (error) {
       console.error('Error submitting battle result', error);
     }
-  };
+  };  
 
   useEffect(() => {
     if (allPokemons.length > 0) {
@@ -131,7 +132,7 @@ const BattleSimulator = () => {
               <img src={pokemon.sprites.front_default} alt={pokemon.name} />
               {pokemon.name}
               <div className={`dice ${animate ? 'rolling' : 'rolled'}`}>
-                {diceResults.team2[index] && <img src={diceImages[diceResults.team2[index]]} alt={`Dice showing ${diceResults.team2[index]}`} />}
+              {diceResults.team2[index] && <img src={diceImages[diceResults.team2[index]]} alt={`Dice showing ${diceResults.team2[index]}`} />}
               </div>
             </li>
           ))}
