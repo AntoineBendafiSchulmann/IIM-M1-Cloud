@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
 import { TeamContext } from "../../TeamContext";
 import { useNavigate } from "react-router-dom";
@@ -34,7 +34,7 @@ const BattleSimulator = () => {
       .then(response => setAllPokemons(response.data.results));
   }, []);
   
-  const generateRandomTeam = async () => {
+  const generateRandomTeam = useCallback(async () => {
     let randomTeam = [];
     while (randomTeam.length < teamLimit) {
       const randomIndex = Math.floor(Math.random() * allPokemons.length);
@@ -47,7 +47,7 @@ const BattleSimulator = () => {
       }
     }
     setTeam2(randomTeam);
-  };
+  }, [allPokemons, teamLimit]);
   
   const rollDice = () => {
     return Math.floor(Math.random() * 6) + 1; 
@@ -104,7 +104,7 @@ const BattleSimulator = () => {
     if (allPokemons.length > 0) {
       generateRandomTeam();
     }
-  }, [allPokemons]);
+  }, [allPokemons, generateRandomTeam]);
 
   return (
     <div className="battle-simulator">
