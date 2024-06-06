@@ -21,7 +21,18 @@ async function getAllPokemons(req, res) {
 	}
 }
 
+async function saveBattleResult(req, res) {
+	try {
+		const battleResult = req.body;
+		await pokemonService.saveBattleResult(battleResult);
+		res.status(200).json({ message: "Battle result saved successfully" });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+}
+
 module.exports = {
 	getPokemonById,
 	getAllPokemons,
+	saveBattleResult,
 };

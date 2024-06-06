@@ -37,11 +37,12 @@ const BattleSimulator = () => {
     }
     setTeam2(randomTeam);
   };
+  
   const rollDice = () => {
     return Math.floor(Math.random() * 6) + 1; 
   };
 
-  const simulateBattle = () => {
+  const simulateBattle = async () => {
     let team1Score = 0;
     let team2Score = 0;
 
@@ -51,7 +52,29 @@ const BattleSimulator = () => {
     }
 
     const winner = team1Score > team2Score ? "Team 1 wins!" : "Team 2 wins!";
-    setResult(`${winner} (Team 1: ${team1Score}, Team 2: ${team2Score})`);
+    const resultMessage = `${winner} (Team 1: ${team1Score}, Team 2: ${team2Score})`;
+    setResult(resultMessage);
+
+    const battleResult = {
+      winner: winner,
+      team1: {
+        name: teamName,
+        score: team1Score,
+        pokemons: team1.map(pokemon => pokemon.name)
+      },
+      team2: {
+        name: "Random Team",
+        score: team2Score,
+        pokemons: team2.map(pokemon => pokemon.name)
+      }
+    };
+
+    try {
+      await axios.post('http://localhost:3000/api/battle-results', battleResult);
+      console.log('Battle result submitted successfully');
+    } catch (error) {
+      console.error('Error submitting battle result', error);
+    }
   };
 
   useEffect(() => {

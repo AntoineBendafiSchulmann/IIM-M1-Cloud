@@ -4,6 +4,7 @@ const app = express();
 const pokemonRoute = require("./routes/pokemonRoute");
 
 app.use(cors());
+app.use(express.json()); 
 
 // Utilisation des routes
 app.use("/api", pokemonRoute);
