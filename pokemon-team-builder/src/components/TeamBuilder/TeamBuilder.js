@@ -15,7 +15,13 @@ const TeamBuilder = () => {
   useEffect(() => {
     const loadPokemons = async () => {
       setLoading(true);
-      const response = await axios.get(`https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemons`);
+
+      // add alow origin header to the get request
+      const response = await axios.get(`https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemons`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
       const promises = response.data.results.map(pokemon => {
         const id = pokemon.url.split('/').filter(Boolean).pop();
         return axios.get(`https://ulxy6s8cub.execute-api.us-east-1.amazonaws.com/prod/getPokemonById/${id}`);
