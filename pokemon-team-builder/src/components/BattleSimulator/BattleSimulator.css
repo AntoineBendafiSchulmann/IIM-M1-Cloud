@@ -1,51 +1,106 @@
 .battle-simulator {
-    text-align: center;
-    padding: 20px;
+  text-align: center;
+  padding: 20px;
+}
+
+.team {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.pokemon-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pokemon-card img {
+  max-width: 100px;
+  margin-bottom: 10px;
+}
+
+.simulate-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.simulate-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+h3 {
+  margin-top: 20px;
+}
+
+.dice {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 10px;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dice img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.dice.rolling {
+  animation: roll 1s ease-out;
+}
+
+@keyframes roll {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  .team {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    list-style-type: none;
-    padding: 0;
+  25% {
+    transform: rotate(90deg);
   }
-  
-  .pokemon-card {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    width: 150px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  50% {
+    transform: rotate(180deg);
   }
-  
-  .pokemon-card img {
-    max-width: 100px;
-    margin-bottom: 10px;
+  75% {
+    transform: rotate(270deg);
   }
-  
-  .simulate-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  100% {
+    transform: rotate(360deg);
   }
-  
-  .simulate-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  h3 {
-    margin-top: 20px;
-  }
-  
+}
+
+.battle-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.result {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 20px;
+  color: #333;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f1f1f1;
+  display: inline-block;
+}
