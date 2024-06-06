@@ -1,0 +1,77 @@
+.team-builder {
+  text-align: center;
+  padding: 20px;
+}
+
+.available-pokemons, .my-team {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  list-style-type: none; 
+  padding: 0;
+}
+
+.pokemon-list {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.pokemon-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pokemon-card img {
+  max-width: 100px;
+  margin-bottom: 10px;
+}
+
+.pokemon-card button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pokemon-card button.remove {
+  background-color: #dc3545;
+}
+
+.pokemon-card button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pokemon-card a {
+  color: black;
+  text-decoration: none;
+}
+
+.pokemon-card a:hover {
+  text-decoration: underline;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+input[type="text"] {
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { TeamContext } from "../../TeamContext";
 import { useNavigate } from "react-router-dom";
+import './BattleSimulator.css';
 
 const BattleSimulator = () => {
   const { team: team1, teamName } = useContext(TeamContext);
@@ -60,13 +61,13 @@ const BattleSimulator = () => {
   }, [allPokemons]);
 
   return (
-    <div>
+    <div className="battle-simulator">
       <h2>Battle Simulator</h2>
       <div>
         <h3>{teamName}</h3>
-        <ul>
+        <ul className="team">
           {team1.map(pokemon => (
-            <li key={pokemon.uniqueId}>
+            <li key={pokemon.uniqueId} className="pokemon-card">
               <img src={pokemon.sprites.front_default} alt={pokemon.name} />
               {pokemon.name}
             </li>
@@ -75,16 +76,16 @@ const BattleSimulator = () => {
       </div>
       <div>
         <h3>Team 2 (Random)</h3>
-        <ul>
+        <ul className="team">
           {team2.map(pokemon => (
-            <li key={pokemon.uniqueId}>
+            <li key={pokemon.uniqueId} className="pokemon-card">
               <img src={pokemon.sprites.front_default} alt={pokemon.name} />
               {pokemon.name} 
             </li>
           ))}
         </ul>
       </div>
-      <button onClick={simulateBattle}>Simulate Battle</button>
+      <button className="simulate-button" onClick={simulateBattle}>Simulate Battle</button>
       {result && <p>{result}</p>}
     </div>
   );
