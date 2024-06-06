@@ -16,14 +16,21 @@ const TeamBuilder = () => {
     const loadPokemons = async () => {
       setLoading(true);
 
-      const response = await axios.get(`/prod/getPokemons`);
-      const promises = response.data.results.map(pokemon => {
-        const id = pokemon.url.split('/').filter(Boolean).pop();
-        return axios.get(`/prod/getPokemonById/${id}`);
-      });
-      const responses = await Promise.all(promises);
-      const pokemonsWithDetails = responses.map(response => response.data);
-      setPokemons(prevPokemons => [...prevPokemons, ...pokemonsWithDetails]);
+      try {
+        const response = await axios.get(`/prod/getPokemons`);
+        if (response.data && response.data.results) {
+          const promises = response.data.results.map(pokemon => {
+            const id = pokemon.url.split('/').filter(Boolean).pop();
+            return axios.get(`/prod/getPokemonById/${id}`);
+          });
+          const responses = await Promise.all(promises);
+          const pokemonsWithDetails = responses.map(response => response.data);
+          setPokemons(prevPokemons => [...prevPokemons, ...pokemonsWithDetails]);
+        }
+      } catch (error) {
+        console.error('Error fetching pokemons:', error);
+      }
+
       setLoading(false);
     };
     loadPokemons();
@@ -42,9 +49,13 @@ const TeamBuilder = () => {
     }
 
     if (team.length < teamLimit) {
-      const response = await axios.get(`/api/getPokemonById/${id}`);
-      const pokemonDetails = response.data;
-      setTeam([...team, { ...pokemonDetails, sprite: pokemonDetails.sprites.front_default, uniqueId: `${pokemon.name}-${team.length}-${Date.now()}` }]);
+      try {
+        const response = await axios.get(`/api/getPokemonById/${id}`);
+        const pokemonDetails = response.data;
+        setTeam([...team, { ...pokemonDetails, sprite: pokemonDetails.sprites.front_default, uniqueId: `${pokemon.name}-${team.length}-${Date.now()}` }]);
+      } catch (error) {
+        console.error('Error adding pokemon to team:', error);
+      }
     }
   };
 
